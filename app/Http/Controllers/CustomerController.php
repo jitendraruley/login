@@ -1,19 +1,23 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\CustomerModel;
 use Illuminate\Http\Request;
-use App\laravel;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Input;
-use DB;
+use App\Http\Controllers\Controller;
+
 
 class CustomerController extends Controller
 {
     //
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        return view('welcome');
+        $user = Auth::user();
+        return view('home', compact('user'));
     }
 
     public function create()
@@ -23,35 +27,20 @@ class CustomerController extends Controller
 
     /**
      * @param Request $request
+     * @return string
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        $user = new laravel;
-        $user->name = Input::get("name");
-        $user->email = Input::get("email");
-        $user->number = Input::get("number");
-        $user->address = Input::get("address");
-        $user->save();
-        return ("Customer Data inserted successfully in database");
-//        $this->validate($request [
-//            'name'      =>  'required',
-//            'email'     =>  'required',
-//            'number'    =>  'required',
-//            'address'   =>  'required'
-//            ]);
-//
-//        $custmore = new CustomerModel([
-//
-//            'name'      =>  $request->get('name'),
-//            'email'     =>  $request->get('email'),
-//            'number'    =>  $request->get('number'),
-//            'address'   =>  $request->get('address')
-//        ]);
-//
-//        $custmore->save();
-//
-//    return redirect()->route('/home');
+
+        $data = new CustomerModel;
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->number = $request->number;
+        $data->address = $request->address;
+        $data->save();
+
+       return ("Customer Data inserted successfully in database");
     }
 
     public function show($id)

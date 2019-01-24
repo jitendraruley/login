@@ -12,5 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomerModel extends Model
 {
-    protected $table = ['name', 'email', 'number', 'address'];
+    protected $fillable = [
+        'name', 'email', 'number', 'address'
+    ];
+
+
 }
